@@ -3,77 +3,85 @@
 @tailwind utilities;
 
 :root {
-    --background: #f9faf5;
-    --background-2: #eceee4;
-    --foreground: #ffffff;
-    --primary: #f4f5f8;
-    --text: #000;
+  --background: #f9faf5;
+  --background-2: #eceee4;
+  --foreground: #ffffff;
+  --primary: #f4f5f8;
+  --text: #000;
 }
 
 body {
-    color: var(--text);
-    width: 100dvw;
-    min-height: 100dvh;
-    overflow :hidden;
+  color: var(--text);
+  width: 100dvw;
+  min-height: 100dvh;
+  overflow: hidden;
   background: linear-gradient(
-        to bottom,
-        var(--background),
-        var(--background-2)
-    );
-    font-family: Arial, Helvetica, sans-serif;
+    to bottom,
+    var(--background),
+    var(--background-2)
+  );
+  font-family: var(--font-geist-mono), Arial, Helvetica, sans-serif;
 }
 
 @layer utilities {
-    .text-balance {
-        text-wrap: balance;
-    }
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 .circle {
-    position: absolute;
-    top: 20%;
-    left: -5%;
-    width: 400px;
-    height: 400px;
-    border-radius: 100%;
+  position: absolute;
+  top: 20%;
+  left: -5%;
+  width: 400px;
+  height: 400px;
+  border-radius: 100%;
   background: hsl(222, 85%, 47%);
-    scale: 5;
-    filter: drop-shadow(0.5px 0.5px 4px rgba(0, 0, 0, 0.7));
+  scale: 5;
+  filter: drop-shadow(0.5px 0.5px 4px rgba(0, 0, 0, 0.7));
 }
 
-
-.circle::before, .circle::after {
-    content: '';
-    position: absolute;
-    top: 17%;
-    width: 400px;
-    height: 400px;
-    border-radius: 100%;
-     /* Adjust the scale factor for different sizes */
+.circle::before,
+.circle::after {
+  content: "";
+  position: absolute;
+  top: 17%;
+  width: 400px;
+  height: 400px;
+  border-radius: 100%;
+  /* Adjust the scale factor for different sizes */
 }
 
 .circle::before {
-    filter: drop-shadow(0.5px 0.5px 1.5px rgba(0, 0, 0, 0.4));
-    left: -15%; /* Adjust position for first layer */
-     background: hsl(222, 89%, 42%);
+  filter: drop-shadow(0.5px 0.5px 1.5px rgba(0, 0, 0, 0.4));
+  left: -15%; /* Adjust position for first layer */
+  background: hsl(222, 89%, 42%);
 }
 
 .circle::after {
-    filter: drop-shadow(0.5px 0.5px 1px rgba(0, 0, 0, 0.4));
-     top: 30%;
-    left: -25%; /* Adjust position for second layer */
-     background: hsl(222, 89%, 40%);
-    transform : rotate(45deg);
+  filter: drop-shadow(0.5px 0.5px 1px rgba(0, 0, 0, 0.4));
+  top: 30%;
+  left: -25%; /* Adjust position for second layer */
+  background: hsl(222, 89%, 40%);
+  transform: rotate(45deg);
 }
 .cicle-1 {
-    position: absolute;
+  position: absolute;
 }
 input {
   padding: 5px 30px;
   height: 50px;
-  border-radius : 10px;
-  background : transparent;
-  border : 1px dashed #e0e0e0;
-  letter-spacing : 1px ;
-  outline : none;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px dashed #d0d0d0;
+  letter-spacing: 1px;
+  outline: none;
 }
+input:active,
+input:focus {
+  border-color: #e0e0e0;
+}
+.doto {
+ font-family: "Doto";
+ font-weight: 800;
 
+}
