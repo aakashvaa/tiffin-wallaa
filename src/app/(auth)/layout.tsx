@@ -1,3 +1,4 @@
+import Circles from "@/components/Circles";
 import type { Metadata } from "next";
 import Image from "next/image";
 import React from "react";
@@ -12,14 +13,14 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="w-[100dvw] relative overflow-hidden h-screen flex justify-end items-center">
-      <div className="circle" />
+    <div className="w-[100dvw] relative overflow-hidden h-screen flex justify-center lg:justify-end items-center">
+      <Circles />
       <Image
         src="/images/logo.svg"
         alt="app-logo"
         width={200}
         height={30}
-        className="absolute top-10 right-10 drop-shadow-xl"
+        className="absolute right-2 top-2 w-[100px] sm:w-auto sm:top-10 sm:right-10 drop-shadow-xl"
       />
       {children}
     </div>

@@ -1,16 +1,10 @@
 "use client";
-import { AnimatePresence, easeIn, motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import internal from "stream";
-
-const spring = {
-  type: "spring",
-  stiffness: 700,
-  mass: 3,
-  duration: 0.8, // Adjust animation duration
-  ease: "easeInOut", // Smooth transition
-  damping: 30,
-};
+import AuthPageWordAnimation from "@/components/AuthPageWordAnimation";
+import Github from "@/components/icons/Github";
+import { AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export default function SignIn() {
   const [user, setUser] = useState("");
@@ -37,35 +31,48 @@ export default function SignIn() {
       }, 10); // Adjust timing for animation speed
     }
   }, [activate]);
-
   return (
     <AnimatePresence>
-      <div className="h-full w-[500px] pt-36 -translate-x-[300px] p-4">
-        <div className="text-[3em] flex justify-start items-center">
-          {user.length !== 0 ? (
-            <motion.p
-              className="doto pr-2"
-              initial={{ scale: 0, y: -100 }}
-              exit={{ scale: 0, y: 10 }}
-              animate={{ scale: 1.2, y: 0 }}
-              transition={spring}
-            >
-              [{name}]
-            </motion.p>
-          ) : (
-            <motion.p
-              className="pr-1"
-              initial={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={spring}
-            >
-              S
-            </motion.p>
-          )}
-          <p className="tracking-wider">ign In</p>
-        </div>
-        <div className="w-full h-full flex justify-center pt-24">
+      <div className="h-[80%] text-[#F5F7F0] lg:text-black w-[500px] md:pt-28 pt-4 -translate-x-0 lg:-translate-x-[300px] ">
+        <AuthPageWordAnimation user={user} name={name} suffix="ign In" />
+
+        <div className="w-full flex-col gap-16  h-full flex justify-center ">
+          <div className=" mx-2 sm:mx-0 flex gap-2 sm:gap-5 ">
+            <div className="relative basis-1/3 h-full">
+              <div className="absolute w-full h-full rounded-xl  lg:bg-[#66666630] blur-sm   -z-50" />
+              <div className="basis-1/3 bg-[#F5F7F0] lg:bg-[rgba(255,255,255,0.4)] shadow-sm flex backdrop-blur-3xl justify-center drop-shadow-sm    py-3 rounded-md ">
+                <Image
+                  src="./images/google.svg"
+                  alt="google"
+                  width={20}
+                  height={30}
+                />
+              </div>
+            </div>
+            <div className="relative basis-1/3 h-full">
+              <div className="absolute w-full h-full rounded-xl  lg:bg-[#66666630] blur-sm   -z-50" />
+              <div className="basis-1/3 bg-[#F5F7F0] lg:bg-[rgba(255,255,255,0.4)] shadow-sm flex backdrop-blur-3xl justify-center drop-shadow-sm    py-3 rounded-md ">
+                <Image
+                  src="./images/github.svg"
+                  alt="github"
+                  width={20}
+                  height={30}
+                />
+              </div>
+            </div>
+
+            <div className="relative basis-1/3 h-full">
+              <div className="absolute w-full h-full rounded-xl  lg:bg-[#66666630] blur-sm   -z-50" />
+              <div className="basis-1/3 bg-[#F5F7F0] lg:bg-[rgba(255,255,255,0.4)] shadow-sm flex backdrop-blur-3xl justify-center drop-shadow-sm    py-3 rounded-md ">
+                <Image
+                  src="./images/linkedin.svg"
+                  alt="linked"
+                  width={20}
+                  height={30}
+                />
+              </div>
+            </div>
+          </div>
           <form className="flex flex-col gap-6 w-full">
             <input
               value={user}
@@ -84,6 +91,9 @@ export default function SignIn() {
             <input type="text" placeholder="email" />
             <input type="text" placeholder="password" />
           </form>
+          <Link className=" flex text-black translate-y-10 md:translate-y-0 pr-5 flex-row-reverse" href={"signup"}>
+            Don't have an account {">"}
+          </Link>
         </div>
       </div>
     </AnimatePresence>
