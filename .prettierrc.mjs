@@ -1,5 +1,5 @@
 export default {
-  arrowParens: "always",
+  arrowParens: 'always',
   singleQuote: true,
   jsxSingleQuote: true,
   tabWidth: 2,

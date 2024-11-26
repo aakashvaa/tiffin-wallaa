@@ -1,11 +1,11 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 export const spring = (mass = 2) => {
   return {
-    type: "spring",
+    type: 'spring',
     stiffness: 700,
     mass,
     duration: 0.8, // Adjust animation duration
-    ease: "easeInOut", // Smooth transition
+    ease: 'easeInOut', // Smooth transition
     damping: 30,
   };
 };
@@ -20,10 +20,10 @@ export default function AuthPageWordAnimation({
   suffix: string;
 }) {
   return (
-    <div className="md:text[3em] text-black sm:text-white lg:text-black mix-blend-difference text-3xl	 -translate-y-10 flex justify-start items-center">
+    <div className='md:text[3em] text-black sm:text-white lg:text-black mix-blend-difference text-3xl	 flex justify-start items-center'>
       {user.length !== 0 ? (
         <motion.p
-          className="doto pr-2"
+          className='doto pr-2'
           initial={{ scale: 0, y: -100 }}
           exit={{ scale: 0, y: 10 }}
           animate={{ scale: 1.2, y: 0 }}
@@ -33,7 +33,7 @@ export default function AuthPageWordAnimation({
         </motion.p>
       ) : (
         <motion.p
-          className="pr-1"
+          className='pr-1'
           initial={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -42,7 +42,7 @@ export default function AuthPageWordAnimation({
           S
         </motion.p>
       )}
-      <p className="tracking-wider"> {suffix} </p>
+      <p className='tracking-wider'> {suffix} </p>
     </div>
   );
 }
