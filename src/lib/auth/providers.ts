@@ -32,7 +32,7 @@ export const providers = [
 
       const user = await db.user.findUnique({
         where: {
-          email: credentials.email,
+          email: credentials.email as string,
         },
       });
 
@@ -41,7 +41,7 @@ export const providers = [
       }
 
       const isPasswordValid = await bcrypt.compare(
-        credentials.password,
+        credentials.password as string,
         user.password,
       );
 

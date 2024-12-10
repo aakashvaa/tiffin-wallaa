@@ -17,9 +17,6 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: 'Tiffin walla',
-  icons: {
-    icon: '/images/WhiteLogo.svg',
-  },
   description:
     'This web app provides you the all the management feature to track your tifin details.',
 };
@@ -37,6 +34,18 @@ export default function RootLayout({
         <link
           href='https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap'
           rel='stylesheet'
+        />
+        <link
+          type='image/svg+xml'
+          rel='icon'
+          href='/images/DarkLogo.svg?v=2'
+          media='(prefers-color-scheme: light)'
+        />
+        <link
+          rel='icon'
+          type='image/svg+xml'
+          href='/images/WhiteLogo.svg?v=2'
+          media='(prefers-color-scheme: dark)'
         />
       </head>
       <body
