@@ -19,7 +19,6 @@ export const authConfig: NextAuthConfig = {
         ...session,
         user: {
           ...session.user,
-          id: token.id,
           token,
         },
       };

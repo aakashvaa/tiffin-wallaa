@@ -1,8 +1,9 @@
 'use client';
 
-import { login } from '@/actions/auth';
+import { login, logout } from '@/actions/auth';
 import Image from 'next/image';
 import React from 'react';
+
 export default function AuthButton() {
   return (
     <div className=' mx-2 sm:mx-0 flex gap-2 sm:gap-5 '>
