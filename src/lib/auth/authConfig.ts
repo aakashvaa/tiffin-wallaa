@@ -2,17 +2,37 @@ import { NextAuthConfig } from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { db } from '@/lib/db';
 import { providers } from './providers';
-import { callbacks } from './callback';
 
 export const authConfig: NextAuthConfig = {
-  adapter: PrismaAdapter(db),
+  // adapter: PrismaAdapter(db),
+  secret: process.env.AUTH_SECRET,
   session: {
     strategy: 'jwt',
   },
   pages: {
     signIn: '/signin',
-    signOut: '/signup',
   },
   providers,
-  callbacks,
+  callbacks: {
+    async session({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          token,
+        },
+      };
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        return {
+          ...token,
+          id: user.id,
+        };
+      }
+      return token;
+    },
+  },
+  debug: true,
 };

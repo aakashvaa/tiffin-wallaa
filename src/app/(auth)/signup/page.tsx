@@ -1,10 +1,11 @@
 'use client';
+import AuthButton from '@/components/AuthButton';
 import AuthPageWordAnimation from '@/components/AuthPageWordAnimation';
 import Github from '@/components/icons/Github';
 import { AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import AuthButton from '@/components/AuthButton';
+
 import { useState, useEffect } from 'react';
 
 export default function SignUp() {

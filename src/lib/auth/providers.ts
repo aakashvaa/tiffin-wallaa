@@ -1,23 +1,24 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
-import LinkedInProvider from 'next-auth/providers/linkedin';
+import FacebookProvider from 'next-auth/providers/facebook';
 import { db } from '@/lib/db';
+import type { NextAuthConfig } from 'next-auth';
 
 import bcrypt from 'bcryptjs';
 
 export const providers = [
   GoogleProvider({
-    clientId: process.env.GOOGLE_CLIENT_ID!,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    clientId: process.env.AUTH_GOOGLE_ID!,
+    clientSecret: process.env.AUTH_GOOGLE_SECRET!,
   }),
   GitHubProvider({
-    clientId: process.env.GITHUB_ID!,
-    clientSecret: process.env.GITHUB_SECRET!,
+    clientId: process.env.AUTH_GITHUB_ID!,
+    clientSecret: process.env.AUTH_GITHUB_SECRET!,
   }),
-  LinkedInProvider({
-    clientId: process.env.LINKEDIN_ID!,
-    clientSecret: process.env.LINKEDIN_SECRET!,
+  FacebookProvider({
+    clientId: process.env.AUTH_FACEBOOK_ID!,
+    clientSecret: process.env.AUTH_FACEBOOK_SECRET!,
   }),
   CredentialsProvider({
     name: 'Credentials',
@@ -57,3 +58,8 @@ export const providers = [
     },
   }),
 ];
+
+// Notice this is only an object, not a full Auth.js instance
+export default {
+  providers,
+} satisfies NextAuthConfig;
