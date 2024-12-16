@@ -34,7 +34,7 @@ export default function SignIn() {
   }, [activate]);
   return (
     <AnimatePresence>
-      <div className='h-[70%] text-[#F5F7F0]  lg:text-black   w-[500px] md:pt-20 pt-4 -translate-x-0 lg:-translate-x-[300px] '>
+      <div className='h-[70%] text-[#F5F7F0] lg:text-black   w-[500px] md:pt-20 pt-4 -translate-x-0 lg:-translate-x-[200px] '>
         <AuthPageWordAnimation user={user} name={name} suffix='ign In' />
 
         <div className='w-full flex-col gap-16 pt-20 h-full flex  justify-start '>

@@ -8,7 +8,7 @@ export default async function middlleware(req: NextRequest) {
   const session = await auth();
   console.log(session);
 
-  if (!session && pathname !== '/signin') {
+  if (!session && pathname !== '/signin' && pathname !== '/signup') {
     const signInURL = new URL('/signin', req.nextUrl.origin);
     return NextResponse.redirect(signInURL.toString());
   }
