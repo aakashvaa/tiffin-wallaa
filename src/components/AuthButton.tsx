@@ -1,8 +1,8 @@
 'use client';
 
-import { login } from '@/actions/auth';
 import Image from 'next/image';
 import React from 'react';
+import { login } from '../actions/auth';
 
 export default function AuthButton() {
   return (

@@ -1,17 +1,10 @@
 {
   "extends": [
     "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
     "airbnb",
-    "airbnb/hooks",
-    "plugin:@typescript-eslint/recommended"
+    "airbnb/hooks"
   ],
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
-    }
-  },
   "rules": {
     "import/extensions": [
       "error",
