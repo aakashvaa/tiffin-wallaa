@@ -2,7 +2,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
 import FacebookProvider from 'next-auth/providers/facebook';
-import { db } from '@/lib/db';
+import { prisma } from '../db';
 import type { NextAuthConfig } from 'next-auth';
 
 import bcrypt from 'bcryptjs';
@@ -30,8 +30,9 @@ export const providers = [
       if (!credentials?.email || !credentials?.password) {
         return null;
       }
+      console.log({ credentials });
 
-      const user = await db.user.findUnique({
+      const user = await prisma.user.findUnique({
         where: {
           email: credentials.email as string,
         },
@@ -40,10 +41,9 @@ export const providers = [
       if (!user?.password) {
         return null;
       }
-
       const isPasswordValid = await bcrypt.compare(
         credentials.password as string,
-        user.password,
+        user?.password,
       );
 
       if (!isPasswordValid) {
