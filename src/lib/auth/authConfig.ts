@@ -15,6 +15,8 @@ export const authConfig: NextAuthConfig = {
   providers,
   callbacks: {
     async session({ session, token }) {
+      console.log(session);
+      if (!session.user?.email) return session;
       return {
         ...session,
         user: {
