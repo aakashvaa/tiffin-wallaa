@@ -4,7 +4,7 @@ import { db } from '@/lib/db';
 import { providers } from './providers';
 
 export const authConfig: NextAuthConfig = {
-  // adapter: PrismaAdapter(db),
+  adapter: PrismaAdapter(db),
   secret: process.env.AUTH_SECRET,
   session: {
     strategy: 'jwt',
@@ -15,8 +15,8 @@ export const authConfig: NextAuthConfig = {
   providers,
   callbacks: {
     async session({ session, token }) {
-      console.log(session);
-      if (!session.user?.email) return session;
+      console.log('session check', session);
+
       return {
         ...session,
         user: {

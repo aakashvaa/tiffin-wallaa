@@ -25,8 +25,10 @@ model User {
   name          String
   email         String    @unique
   emailVerified DateTime?
+  image         String?
   phone         String?
-  password      String
+  password      String?
+  isFirstLogin  Boolean   @default(true)
   role          UserRole  @default(CUSTOMER)
 
   createdAt DateTime @default(now())
@@ -99,8 +101,9 @@ model Feedback {
   providerId String   @db.Uuid
   rating     Int
   comments   String?
-  customer   Customer @relation(fields: [customerId], references: [userId])
-  provider   Provider @relation(fields: [providerId], references: [userId])
+  customer   Customer @relation(fields: [customerId], references: [userId], onDelete: Cascade)
+  provider   Provider @relation(fields: [providerId], references: [userId], onDelete: Cascade)
+
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -108,43 +111,43 @@ model Feedback {
 }
 
 enum AccountType {
-  OAUTH
-  CREDENTIALS
+  oauth       
+  credentials 
 }
 
 model Account {
-  userId                String      @db.Uuid
-  type                  AccountType
-  providerAuth          String
-  providerAuthAccountId String
-  refresh_token         String?
-  access_token          String?
-  expires_at            Int?
-  token_type            String?
-  scope                 String?
-  id_token              String?
-  session_state         String?
+ id                String      @id @default(uuid()) @db.Uuid
+ userId            String      @db.Uuid
+ type              AccountType @default(oauth)
+ provider          String?
+ providerAccountId String?
+ refresh_token     String?  @db.Text
+ access_token      String?  @db.Text
+ expires_at        Int?
+ token_type        String?
+ scope             String?
+ id_token          String?  @db.Text
+ session_state     String?
+ createdAt         DateTime @default(now())
+ updatedAt         DateTime @updatedAt
+ user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@id([providerAuth, userId, providerAuthAccountId])
+ @@unique([provider, providerAccountId])
+ @@map("accounts")
 }
 
 model Session {
-  sessionToken String   @unique
+  sessionToken String   @unique 
   userId       String   @db.Uuid
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt 
 }
 
 model VerificationToken {
-  identifier String
+  identifier String @unique 
   token      String
   expires    DateTime
 
@@ -152,14 +155,14 @@ model VerificationToken {
 }
 
 model Authenticator {
-  credentialID         String  @unique
+  credentialID         String  @unique @db.VarChar(255)
   userId               String  @db.Uuid
   providerAccountId    String
-  credentialPublicKey  String
+  credentialPublicKey  String  @db.VarChar(255)
   counter              Int
-  credentialDeviceType String
+  credentialDeviceType String  @db.VarChar(255)
   credentialBackedUp   Boolean
-  transports           String?
+  transports           String? @db.VarChar(255) 
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

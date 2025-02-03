@@ -5,7 +5,7 @@ CREATE TYPE "UserRole" AS ENUM ('CUSTOMER', 'PROVIDER', 'ADMIN');
 CREATE TYPE "SubscriptionStatus" AS ENUM ('ACTIVE', 'CANCELLED', 'EXPIRED', 'PENDING');
 
 -- CreateEnum
-CREATE TYPE "AccountType" AS ENUM ('OAUTH', 'CREDENTIALS');
+CREATE TYPE "AccountType" AS ENUM ('oauth', 'credentials');
 
 -- CreateTable
 CREATE TABLE "users" (
@@ -13,8 +13,10 @@ CREATE TABLE "users" (
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "emailVerified" TIMESTAMP(3),
+    "image" TEXT,
     "phone" TEXT,
-    "password" TEXT NOT NULL,
+    "password" TEXT,
+    "isFirstLogin" BOOLEAN NOT NULL DEFAULT true,
     "role" "UserRole" NOT NULL DEFAULT 'CUSTOMER',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -80,11 +82,12 @@ CREATE TABLE "feedback" (
 );
 
 -- CreateTable
-CREATE TABLE "Account" (
+CREATE TABLE "accounts" (
+    "id" UUID NOT NULL,
     "userId" UUID NOT NULL,
-    "type" "AccountType" NOT NULL,
-    "providerAuth" TEXT NOT NULL,
-    "providerAuthAccountId" TEXT NOT NULL,
+    "type" "AccountType" NOT NULL DEFAULT 'oauth',
+    "provider" TEXT,
+    "providerAccountId" TEXT,
     "refresh_token" TEXT,
     "access_token" TEXT,
     "expires_at" INTEGER,
@@ -95,7 +98,7 @@ CREATE TABLE "Account" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Account_pkey" PRIMARY KEY ("providerAuth","userId","providerAuthAccountId")
+    CONSTRAINT "accounts_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -118,14 +121,14 @@ CREATE TABLE "VerificationToken" (
 
 -- CreateTable
 CREATE TABLE "Authenticator" (
-    "credentialID" TEXT NOT NULL,
+    "credentialID" VARCHAR(255) NOT NULL,
     "userId" UUID NOT NULL,
     "providerAccountId" TEXT NOT NULL,
-    "credentialPublicKey" TEXT NOT NULL,
+    "credentialPublicKey" VARCHAR(255) NOT NULL,
     "counter" INTEGER NOT NULL,
-    "credentialDeviceType" TEXT NOT NULL,
+    "credentialDeviceType" VARCHAR(255) NOT NULL,
     "credentialBackedUp" BOOLEAN NOT NULL,
-    "transports" TEXT,
+    "transports" VARCHAR(255),
 
     CONSTRAINT "Authenticator_pkey" PRIMARY KEY ("userId","credentialID")
 );
@@ -140,7 +143,13 @@ CREATE INDEX "subscriptions_customerId_idx" ON "subscriptions"("customerId");
 CREATE INDEX "subscriptions_providerId_idx" ON "subscriptions"("providerId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "accounts_provider_providerAccountId_key" ON "accounts"("provider", "providerAccountId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "VerificationToken_identifier_key" ON "VerificationToken"("identifier");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Authenticator_credentialID_key" ON "Authenticator"("credentialID");
@@ -158,13 +167,13 @@ ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_customerId_fkey" FOREI
 ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_providerId_fkey" FOREIGN KEY ("providerId") REFERENCES "providers"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "feedback" ADD CONSTRAINT "feedback_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "customers"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "feedback" ADD CONSTRAINT "feedback_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "customers"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "feedback" ADD CONSTRAINT "feedback_providerId_fkey" FOREIGN KEY ("providerId") REFERENCES "providers"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "feedback" ADD CONSTRAINT "feedback_providerId_fkey" FOREIGN KEY ("providerId") REFERENCES "providers"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "accounts" ADD CONSTRAINT "accounts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
