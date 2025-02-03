@@ -19,9 +19,8 @@ export default function AuthLayout({
         src='/images/logo.svg'
         alt='app-logo'
         width={100}
-        priority
         height={20}
-        className='absolute right-2 top-2 w-[100px] h-auto  sm:top-10 sm:right-10 drop-shadow-xl'
+        className='absolute right-2 top-2 w-[100px]  sm:top-10 sm:right-10 drop-shadow-xl'
       />
       {children}
     </div>

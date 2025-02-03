@@ -1,12 +1,12 @@
 'use client';
-
+import AuthButton from '@/components/AuthButton';
+import AuthPageWordAnimation from '@/components/AuthPageWordAnimation';
+import Github from '@/components/icons/Github';
 import { AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { useState, useEffect } from 'react';
-import AuthPageWordAnimation from '../../../components/AuthPageWordAnimation';
-import AuthButton from '../../../components/AuthButton';
 
 export default function SignUp() {
   const [user, setUser] = useState('');
@@ -35,7 +35,7 @@ export default function SignUp() {
   }, [activate]);
   return (
     <AnimatePresence>
-      <div className='h-[70%] text-[#F5F7F0] lg:text-black w-[500px] md:pt-20 pt-4 -translate-x-0 lg:-translate-x-[200px] '>
+      <div className='h-[70%] text-[#F5F7F0] lg:text-black w-[500px] md:pt-20 pt-4 -translate-x-0 lg:-translate-x-[300px] '>
         <AuthPageWordAnimation user={user} name={name} suffix='ign Up' />
 
         <div className='w-full flex-col gap-16 pt-20 h-full flex justify-start '>

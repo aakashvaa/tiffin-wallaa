@@ -1,11 +1,10 @@
 import { NextAuthConfig } from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
+import { db } from '@/lib/db';
 import { providers } from './providers';
-import { PrismaClient } from '@prisma/client';
-import { prisma } from '../db';
 
 export const authConfig: NextAuthConfig = {
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(db),
   secret: process.env.AUTH_SECRET,
   session: {
     strategy: 'jwt',
@@ -16,11 +15,21 @@ export const authConfig: NextAuthConfig = {
   providers,
   callbacks: {
     async session({ session, token }) {
+      console.log('session check', {
+        ...session,
+        user: {
+          ...session.user,
+          token,
+          isFirstLogin: true,
+        },
+      });
+
       return {
         ...session,
         user: {
           ...session.user,
           token,
+          isFirstLogin: true,
         },
       };
     },

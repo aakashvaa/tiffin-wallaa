@@ -7,55 +7,147 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum UserRole {
+  CUSTOMER
+  PROVIDER
+  ADMIN
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PENDING
+}
+
 model User {
-  id            String          @id @default(cuid())
-  name          String?
-  email         String          @unique
+  id            String    @id @default(uuid()) @db.Uuid
+  name          String
+  email         String    @unique
   emailVerified DateTime?
   image         String?
-  accounts      Account[]
-  sessions      Session[]
-  Authenticator Authenticator[]
+  phone         String?
+  password      String?
+  isFirstLogin  Boolean   @default(true)
+  role          UserRole  @default(CUSTOMER)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  password String?
+  Authenticator Authenticator[]
+  accounts      Account[]
+  sessions      Session[]
+
+  customer Customer?
+  provider Provider?
+
+  @@map("users")
+}
+
+model Customer {
+  userId        String         @id @db.Uuid
+  address       String
+  preferences   Json?
+  user          User           @relation(fields: [userId], references: [id])
+  subscriptions Subscription[]
+  feedback      Feedback[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@map("customers")
+}
+
+model Provider {
+  userId          String         @id @db.Uuid
+  businessName    String
+  kitchenLocation String
+  address         String
+  city            String
+  state           String
+  postalCode      String
+  country         String
+  latitude        Float?
+  longitude       Float?
+  user            User           @relation(fields: [userId], references: [id])
+  subscriptions   Subscription[]
+  feedback        Feedback[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@map("providers")
+}
+
+model Subscription {
+  id         String             @id @default(uuid()) @db.Uuid
+  customerId String             @db.Uuid
+  providerId String             @db.Uuid
+  startDate  DateTime
+  endDate    DateTime
+  plan       String
+  status     SubscriptionStatus
+  customer   Customer           @relation(fields: [customerId], references: [userId], onDelete: Cascade)
+  provider   Provider           @relation(fields: [providerId], references: [userId], onDelete: Cascade)
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+
+  @@index([customerId])
+  @@index([providerId])
+  @@map("subscriptions")
+}
+
+model Feedback {
+  id         String   @id @default(uuid()) @db.Uuid
+  customerId String   @db.Uuid
+  providerId String   @db.Uuid
+  rating     Int
+  comments   String?
+  customer   Customer @relation(fields: [customerId], references: [userId], onDelete: Cascade)
+  provider   Provider @relation(fields: [providerId], references: [userId], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("feedback")
+}
+
+enum AccountType {
+  oauth       
+  credentials 
 }
 
 model Account {
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
+ id                String      @id @default(uuid()) @db.Uuid
+ userId            String      @db.Uuid
+ type              AccountType @default(oauth)
+ provider          String?
+ providerAccountId String?
+ refresh_token     String?  @db.Text
+ access_token      String?  @db.Text
+ expires_at        Int?
+ token_type        String?
+ scope             String?
+ id_token          String?  @db.Text
+ session_state     String?
+ createdAt         DateTime @default(now())
+ updatedAt         DateTime @updatedAt
+ user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@id([provider, providerAccountId])
+ @@unique([provider, providerAccountId])
+ @@map("accounts")
 }
 
 model Session {
-  sessionToken String   @unique
-  userId       String
+  sessionToken String   @unique 
+  userId       String   @db.Uuid
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt 
 }
 
 model VerificationToken {
-  identifier String
+  identifier String @unique 
   token      String
   expires    DateTime
 
@@ -63,14 +155,14 @@ model VerificationToken {
 }
 
 model Authenticator {
-  credentialID         String  @unique
-  userId               String
+  credentialID         String  @unique @db.VarChar(255)
+  userId               String  @db.Uuid
   providerAccountId    String
-  credentialPublicKey  String
+  credentialPublicKey  String  @db.VarChar(255)
   counter              Int
-  credentialDeviceType String
+  credentialDeviceType String  @db.VarChar(255)
   credentialBackedUp   Boolean
-  transports           String?
+  transports           String? @db.VarChar(255) 
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
