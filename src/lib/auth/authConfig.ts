@@ -15,13 +15,21 @@ export const authConfig: NextAuthConfig = {
   providers,
   callbacks: {
     async session({ session, token }) {
-      console.log('session check', session);
+      console.log('session check', {
+        ...session,
+        user: {
+          ...session.user,
+          token,
+          isFirstLogin: true,
+        },
+      });
 
       return {
         ...session,
         user: {
           ...session.user,
           token,
+          isFirstLogin: true,
         },
       };
     },
