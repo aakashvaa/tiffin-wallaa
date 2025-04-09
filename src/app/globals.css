@@ -4,7 +4,7 @@
 
 :root {
   --background: #f9faf5;
-  --background-2: #eceee4;
+  --secondary-background: #eceee4;
   --foreground: #ffffff;
   --primary: #f4f5f8;
   --text: #000;
@@ -18,7 +18,7 @@ body {
   background: linear-gradient(
     to bottom,
     var(--background),
-    var(--background-2)
+    var(--secondary-background)
   );
   font-family: var(--font-geist-mono), Arial, Helvetica, sans-serif;
 }
