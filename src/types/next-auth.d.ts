@@ -5,7 +5,6 @@ import { JWT } from 'next-auth/jwt';
 declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
-      id: string;
       token: JWT;
       email: string;
       emailVerified: Date | null;
@@ -16,6 +15,8 @@ declare module 'next-auth' {
 
   interface User extends DefaultUser {
     id: string;
+    role?: 'CUSTOMER' | 'PROVIDER' | 'ADMIN';
+    isFirstLogin?: boolean;
   }
 }
 
@@ -25,6 +26,8 @@ declare module 'next-auth/jwt' {
     name?: string | null;
     email?: string | null;
     picture?: string | null;
+    role?: 'CUSTOMER' | 'PROVIDER' | 'ADMIN';
+    isFirstLogin?: boolean;
     sub?: string;
     iat?: number;
     exp?: number;

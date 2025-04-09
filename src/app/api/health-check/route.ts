@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     // Test the connection
-    await db.$connect();
+    // await db.$connect();
 
     // Run a simple query
     const userCount = await db.user.count();
