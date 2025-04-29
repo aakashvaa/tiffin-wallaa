@@ -17,6 +17,8 @@ async function selectRole(req: AuthenticatedRequest) {
 
   const payload = await req.json();
   const parsedData = selectRoleSchema.safeParse(payload);
+  console.log(parsedData, req.auth);
+
   if (!parsedData.success) {
     return NextResponse.json(
       {
@@ -28,15 +30,20 @@ async function selectRole(req: AuthenticatedRequest) {
   }
   const { role } = parsedData.data;
   // Update the user role in the database
-  await db.user.update({
-    where: {
-      id: req.auth?.user.id,
-    },
-    data: {
-      role,
-      isFirstLogin: false,
-    },
-  });
+  try {
+    await db.user.update({
+      where: {
+        id: req.auth?.user.id,
+      },
+      data: {
+        role,
+        isFirstLogin: false,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ message: 'Update failed' }, { status: 400 });
+  }
   //   const token = await getToken({ req, secret: process.env.AUTH_SECRET });
   //   console.log('req.auth', req.auth, token, payload);
 

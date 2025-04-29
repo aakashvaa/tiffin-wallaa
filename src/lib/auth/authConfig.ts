@@ -22,11 +22,11 @@ export const authConfig: NextAuthConfig = {
        * The session callback is called whenever a request goes for session data.
        *
        */
-      console.log('jwt check', {
-        token,
-        user,
-        account,
-      });
+      // console.log('jwt check', {
+      //   token,
+      //   user,
+      //   account,
+      // });
       if (user) {
         return {
           ...token,
@@ -52,15 +52,15 @@ export const authConfig: NextAuthConfig = {
     },
 
     async session({ session, token }): Promise<Session> {
-      console.log('session check', {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id,
-          role: token.role,
-          isFirstLogin: token.isFirstLogin,
-        },
-      });
+      // console.log('session check', {
+      //   ...session,
+      //   user: {
+      //     ...session.user,
+      //     id: token.id,
+      //     role: token.role,
+      //     isFirstLogin: token.isFirstLogin,
+      //   },
+      // });
 
       return {
         ...session,

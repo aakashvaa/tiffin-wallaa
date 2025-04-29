@@ -12,6 +12,7 @@ export default function Home() {
       await axios.post('/api/user/select-role', {
         role,
       });
+
       // Update the token with the new role => forced refresh (trigger)
       await forceSessionUpdate();
     } catch (error) {

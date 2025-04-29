@@ -18,6 +18,7 @@ export default function Home() {
       console.log(error);
     }
   };
+
   return (
     <div className='flex flex-col  justify-between h-screen min-h-screen'>
       <motion.h1

@@ -7,7 +7,7 @@ export default async function middlleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   const session = await auth();
-  console.log(session);
+  // console.log(session);
   // Skip redirect logic on pages that are already the destination
   if (!session && pathname !== '/signin') {
     const signInURL = new URL('/signin', req.nextUrl.origin);
@@ -21,6 +21,7 @@ export default async function middlleware(req: NextRequest) {
   ) {
     return NextResponse.next();
   }
+  console.log(session?.user);
   if (session && session.user.isFirstLogin) {
     const signInURL = new URL('/firsttimelogin', req.nextUrl.origin);
     return NextResponse.redirect(signInURL.toString());
