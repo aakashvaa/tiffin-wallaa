@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import React from 'react';
 export const metadata: Metadata = {
-  title: 'TW | customer',
-  description: "tiffin walla customer's home page",
+  title: 'TW | consumer',
+  description: "tiffin walla consumer's home page",
 };
 
 export default function AuthLayout({

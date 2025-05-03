@@ -1,6 +1,6 @@
 enum ROLE {
   PROVIDER = 'PROVIDER',
-  CUSTOMER = 'CUSTOMER',
+  CONSUMER = 'CONSUMER',
   ADMIN = 'ADMIN',
 }
 

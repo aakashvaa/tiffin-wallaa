@@ -8,9 +8,14 @@ generator client {
 }
 
 enum UserRole {
-  CUSTOMER
+  CONSUMER
   PROVIDER
   ADMIN
+}
+enum ServiceType {
+  TIFFIN
+  DINEIN
+  BOTH
 }
 
 enum SubscriptionStatus {
@@ -29,7 +34,7 @@ model User {
   phone         String?
   password      String?
   isFirstLogin  Boolean   @default(true)
-  role          UserRole  @default(CUSTOMER)
+  role          UserRole?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -38,13 +43,13 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  customer Customer?
+  consumer Consumer?
   provider Provider?
 
   @@map("users")
 }
 
-model Customer {
+model Consumer {
   userId        String         @id @db.Uuid
   address       String
   preferences   Json?
@@ -54,7 +59,7 @@ model Customer {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
-  @@map("customers")
+  @@map("consumers")
 }
 
 model Provider {
@@ -68,6 +73,7 @@ model Provider {
   country         String
   latitude        Float?
   longitude       Float?
+  serviceType     ServiceType?
   user            User           @relation(fields: [userId], references: [id])
   subscriptions   Subscription[]
   feedback        Feedback[]
@@ -79,29 +85,29 @@ model Provider {
 
 model Subscription {
   id         String             @id @default(uuid()) @db.Uuid
-  customerId String             @db.Uuid
+  consumerId String             @db.Uuid
   providerId String             @db.Uuid
   startDate  DateTime
   endDate    DateTime
   plan       String
   status     SubscriptionStatus
-  customer   Customer           @relation(fields: [customerId], references: [userId], onDelete: Cascade)
+  consumer   Consumer           @relation(fields: [consumerId], references: [userId], onDelete: Cascade)
   provider   Provider           @relation(fields: [providerId], references: [userId], onDelete: Cascade)
   createdAt  DateTime           @default(now())
   updatedAt  DateTime           @updatedAt
 
-  @@index([customerId])
+  @@index([consumerId])
   @@index([providerId])
   @@map("subscriptions")
 }
 
 model Feedback {
   id         String   @id @default(uuid()) @db.Uuid
-  customerId String   @db.Uuid
+  consumerId String   @db.Uuid
   providerId String   @db.Uuid
   rating     Int
   comments   String?
-  customer   Customer @relation(fields: [customerId], references: [userId], onDelete: Cascade)
+  consumer   Consumer @relation(fields: [consumerId], references: [userId], onDelete: Cascade)
   provider   Provider @relation(fields: [providerId], references: [userId], onDelete: Cascade)
 
   createdAt  DateTime @default(now())

@@ -39,18 +39,18 @@ export default function Home() {
         className=' flex mx-4 rounded-t-md shadow-md p-24 shadow-black/20 items-center justify-around h-1/3 w-full bg-background tracking-wider'
       >
         <button
-          onClick={() => handleRoleSelection(ROLE.CUSTOMER)}
+          onClick={() => handleRoleSelection(ROLE.CONSUMER)}
           title='If you want tiffin service '
           className='border-2 px-10 py-3 rounded-md drop-shadow text-slate-800 bg-secodaryBackground active:drop-shadow'
         >
-          CUSTOMER
+          {ROLE.CONSUMER}
         </button>
         <button
           onClick={() => handleRoleSelection(ROLE.PROVIDER)}
           title='If you want to provide tiffin service'
           className='border-2 px-10 py-3 rounded-md text-slate-800 bg-secodaryBackground drop-shadow active:drop-shadow'
         >
-          PROVIDER
+          {ROLE.PROVIDER}
         </button>
       </motion.div>
       <Logout />

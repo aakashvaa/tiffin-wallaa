@@ -1,4 +1,3 @@
-import Logout from '@/components/Logout';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import React from 'react';
@@ -15,7 +14,6 @@ export default function AuthLayout({
 }) {
   return (
     <div className='w-[100dvw] relative overflow-hidden h-screen flex justify-center lg:justify-end items-center'>
-      <Logout />
       <Image
         src='/images/logo.svg'
         alt='app-logo'

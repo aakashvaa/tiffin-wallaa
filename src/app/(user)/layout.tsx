@@ -6,7 +6,7 @@ export default async function MainScreenLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className='flex w-full  divide-x-2 divide-[#d3d3d3]  h-screen min-h-screen'>
+    <div className='flex w-full  divide-[#d3d3d3]  h-screen min-h-screen'>
       <Navbar />
       {children}
     </div>

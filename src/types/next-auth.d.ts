@@ -15,7 +15,7 @@ declare module 'next-auth' {
 
   interface User extends DefaultUser {
     id: string;
-    role?: 'CUSTOMER' | 'PROVIDER' | 'ADMIN';
+    role?: 'CONSUMER' | 'PROVIDER' | 'ADMIN';
     isFirstLogin?: boolean;
   }
 }
@@ -26,7 +26,7 @@ declare module 'next-auth/jwt' {
     name?: string | null;
     email?: string | null;
     picture?: string | null;
-    role?: 'CUSTOMER' | 'PROVIDER' | 'ADMIN';
+    role?: 'CONSUMER' | 'PROVIDER' | 'ADMIN';
     isFirstLogin?: boolean;
     sub?: string;
     iat?: number;

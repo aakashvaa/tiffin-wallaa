@@ -1,60 +1,15 @@
 'use client';
-import { auth } from '@/auth';
 import { ROLE } from '@/constant';
-import {
-  Brackets,
-  ChartSpline,
-  History,
-  LayoutDashboard,
-  LayoutDashboardIcon,
-  LucideProps,
-  Menu,
-} from 'lucide-react';
-import { useSession } from 'next-auth/react';
-import { Session } from 'next-auth';
-import { ReactNode, useState } from 'react';
+
+import { useState } from 'react';
 import { useTypedSession } from '@/utils/useTypedSession';
-
-interface NavbarItemType {
-  name: string;
-  href: string;
-  icon: ReactNode;
-}
-const providersNavbar: NavbarItemType[] = [
-  {
-    name: 'Dashboard',
-    href: '/',
-    icon: <LayoutDashboardIcon size={18} />,
-  },
-  {
-    name: 'Analytics',
-    href: '/analytics',
-    icon: <ChartSpline size={18} />,
-  },
-  {
-    name: 'Menu',
-    href: '/menu',
-    icon: <Menu size={18} />,
-  },
-];
-
-const consumersNavbar: NavbarItemType[] = [
-  {
-    name: 'Dashboard',
-    href: '/',
-    icon: <LayoutDashboard size={18} />,
-  },
-  {
-    name: 'addChannels',
-    href: '/addChannels',
-    icon: <Brackets size={18} />,
-  },
-  {
-    name: 'history',
-    href: '/history',
-    icon: <History size={18} />,
-  },
-];
+import { logout } from '@/actions/auth';
+import {
+  commonNavbar,
+  consumersNavbar,
+  NavbarItemType,
+  providersNavbar,
+} from '@/types/navbar';
 
 export default function Navbar() {
   const [active, setActive] = useState<string>('/');
@@ -63,17 +18,35 @@ export default function Navbar() {
     setActive(name);
   };
   const navbarItems =
-    session?.user.role === ROLE.CUSTOMER ? consumersNavbar : providersNavbar;
+    session?.user.role === ROLE.CONSUMER ? consumersNavbar : providersNavbar;
   return (
-    <div className='flex flex-col p-5 gap-2'>
-      {navbarItems.map((navbarItem) => (
+    <div className='flex flex-col justify-between  p-5 gap-2'>
+      <div className='flex flex-col gap-2'>
+        {navbarItems.map((navbarItem) => (
+          <NavbarCard
+            navbarItem={navbarItem}
+            isActive={navbarItem.href === active}
+            key={navbarItem.href}
+            onClick={onClickHandler}
+          />
+        ))}
+      </div>
+      <div className=''>
+        {commonNavbar.slice(1).map((navbarItem) => (
+          <NavbarCard
+            navbarItem={navbarItem}
+            isActive={navbarItem.href === active}
+            key={navbarItem.href}
+            onClick={onClickHandler}
+          />
+        ))}
         <NavbarCard
-          navbarItem={navbarItem}
-          isActive={navbarItem.href === active}
-          key={navbarItem.href}
-          onClick={onClickHandler}
+          navbarItem={commonNavbar[0]}
+          isActive={commonNavbar[0].href === active}
+          key={commonNavbar[0].href}
+          onClick={() => logout()}
         />
-      ))}
+      </div>
     </div>
   );
 }
@@ -89,10 +62,10 @@ const NavbarCard = ({
 }) => {
   return (
     <div
-      className={`p-3 w-[250px] whitespace-nowrap flex-shrink flex gap-5 items-center rounded-md cursor-pointer ${isActive && 'bg-white/70 shadow-md drop-shadow-sm  '} `}
+      className={`p-2 w-[250px] whitespace-nowrap flex-shrink flex gap-5 items-center rounded-md cursor-pointer ${isActive && 'bg-white/70 shadow-button-light  '} `}
       onClick={() => onClick(navbarItem.href)}
     >
-      {navbarItem.icon}
+      <navbarItem.icon size={18} />
       {navbarItem.name}
     </div>
   );

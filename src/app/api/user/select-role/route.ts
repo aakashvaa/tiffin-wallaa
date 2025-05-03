@@ -4,9 +4,10 @@ import { AuthenticatedRequest } from '@/types/nextAuthRequest';
 
 import z from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
+import { UserRole } from '@prisma/client';
 
 const selectRoleSchema = z.object({
-  role: z.enum(['CUSTOMER', 'PROVIDER', 'ADMIN']),
+  role: z.enum(['CONSUMER', 'PROVIDER', 'ADMIN']),
 });
 
 async function selectRole(req: AuthenticatedRequest) {
@@ -36,7 +37,7 @@ async function selectRole(req: AuthenticatedRequest) {
         id: req.auth?.user.id,
       },
       data: {
-        role,
+        role: role as UserRole,
         isFirstLogin: false,
       },
     });

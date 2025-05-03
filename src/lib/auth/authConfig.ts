@@ -45,7 +45,7 @@ export const authConfig: NextAuthConfig = {
         });
         if (userData) {
           token.isFirstLogin = userData?.isFirstLogin;
-          token.role = userData?.role;
+          token.role = userData?.role as 'CONSUMER' | 'PROVIDER' | 'ADMIN';
         }
       }
       return token;
@@ -67,7 +67,7 @@ export const authConfig: NextAuthConfig = {
         user: {
           ...session.user,
           id: token.id as string,
-          role: token.role as 'CUSTOMER' | 'PROVIDER' | 'ADMIN',
+          role: token.role as 'CONSUMER' | 'PROVIDER' | 'ADMIN',
           isFirstLogin: token.isFirstLogin as boolean,
         },
       };
