@@ -9,6 +9,8 @@ import {
   LogOut,
   Menu,
   User,
+  Box as Channel,
+  MessageCircle as Feedback,
 } from 'lucide-react';
 
 interface NavbarItemType {
@@ -21,18 +23,23 @@ interface NavbarItemType {
 const providersNavbar: NavbarItemType[] = [
   {
     name: 'Dashboard',
-    href: '/',
+    href: '/provider/dashboard',
     icon: LayoutDashboardIcon,
   },
   {
     name: 'Analytics',
-    href: '/analytics',
+    href: '/provider/analytics',
     icon: ChartSpline,
   },
   {
     name: 'Menu',
-    href: '/menu',
+    href: '/provider/menu',
     icon: Menu,
+  },
+  {
+    name: 'Channel',
+    href: '/provider/channel',
+    icon: Channel,
   },
 ];
 
@@ -58,6 +65,11 @@ const commonNavbar: NavbarItemType[] = [
     name: 'Logout',
     href: '/logout',
     icon: LogOut,
+  },
+  {
+    name: 'Feedback',
+    href: '/feedback',
+    icon: Feedback,
   },
   {
     name: 'Profile',

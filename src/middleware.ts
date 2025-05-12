@@ -33,7 +33,9 @@ export default async function middlleware(req: NextRequest) {
       pathname === '/signin' ||
       pathname === '/signup'
     ) {
-      return NextResponse.redirect(new URL('/consumer', req.nextUrl.origin));
+      return NextResponse.redirect(
+        new URL('/consumer/dashboard', req.nextUrl.origin),
+      );
     }
     return NextResponse.next();
   }
@@ -47,7 +49,9 @@ export default async function middlleware(req: NextRequest) {
       pathname === '/signin' ||
       pathname === '/signup'
     ) {
-      return NextResponse.redirect(new URL('/provider', req.nextUrl.origin));
+      return NextResponse.redirect(
+        new URL('/provider/dashboard', req.nextUrl.origin),
+      );
     }
     return NextResponse.next();
   }

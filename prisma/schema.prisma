@@ -75,6 +75,7 @@ model Provider {
   longitude       Float?
   serviceType     ServiceType?
   user            User           @relation(fields: [userId], references: [id])
+  channels        Channel[]
   subscriptions   Subscription[]
   feedback        Feedback[]
   createdAt       DateTime       @default(now())
@@ -82,6 +83,82 @@ model Provider {
 
   @@map("providers")
 }
+enum MenuType {
+  BREAKFAST
+  LUNCH
+  DINNER
+}
+
+model Channel {
+  id               String         @id @default(uuid()) @db.Uuid
+  name             String
+  image            String
+  rating           Float
+  totalSubscribers Int
+
+  providerId       String         @db.Uuid
+  provider         Provider       @relation(fields: [providerId], references: [userId])
+
+  dailyMenus       DailyMenu[]
+
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model DailyMenu {
+  id         String           @id @default(uuid()) @db.Uuid
+  date       DateTime
+  channelId  String           @db.Uuid
+  channel    Channel          @relation(fields: [channelId], references: [id])
+  menus      MenuAssignment[]
+
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+}
+
+model MenuAssignment {
+  id          String      @id @default(uuid()) @db.Uuid
+  menuType    MenuType
+
+  dishId      String      @db.Uuid
+  dish        Dish        @relation(fields: [dishId], references: [id])
+
+  dailyMenuId String      @db.Uuid
+  dailyMenu   DailyMenu   @relation(fields: [dailyMenuId], references: [id])
+
+  @@unique([dishId, dailyMenuId, menuType])
+}
+
+model Dish {
+  id            String            @id @default(uuid()) @db.Uuid
+  name          String
+  assignments   MenuAssignment[]
+  ingredients   DishIngredient[]
+
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+model Ingredient {
+  id       String            @id @default(uuid()) @db.Uuid
+  name     String            @unique
+  dishes   DishIngredient[]
+
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model DishIngredient {
+  id            String       @id @default(uuid()) @db.Uuid
+  dishId        String       @db.Uuid
+  dish          Dish         @relation(fields: [dishId], references: [id])
+
+  ingredientId  String       @db.Uuid
+  ingredient    Ingredient   @relation(fields: [ingredientId], references: [id])
+
+  @@unique([dishId, ingredientId])
+}
+
 
 model Subscription {
   id         String             @id @default(uuid()) @db.Uuid
@@ -101,6 +178,7 @@ model Subscription {
   @@map("subscriptions")
 }
 
+
 model Feedback {
   id         String   @id @default(uuid()) @db.Uuid
   consumerId String   @db.Uuid
@@ -116,10 +194,12 @@ model Feedback {
   @@map("feedback")
 }
 
+
 enum AccountType {
   oauth       
   credentials 
 }
+
 
 model Account {
  id                String      @id @default(uuid()) @db.Uuid

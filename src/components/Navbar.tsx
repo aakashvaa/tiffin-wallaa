@@ -1,7 +1,6 @@
 'use client';
 import { ROLE } from '@/constant';
-
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTypedSession } from '@/utils/useTypedSession';
 import { logout } from '@/actions/auth';
 import {
@@ -10,15 +9,21 @@ import {
   NavbarItemType,
   providersNavbar,
 } from '@/types/navbar';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
-  const [active, setActive] = useState<string>('/');
   const { data: session } = useTypedSession();
+  const pathname = usePathname();
+
+  const navbarItems =
+    session?.user.role === ROLE.CONSUMER ? consumersNavbar : providersNavbar;
+  const [active, setActive] = useState<string>(pathname);
+  // console.log(active, pathname);
+
   const onClickHandler = (name: string) => {
     setActive(name);
   };
-  const navbarItems =
-    session?.user.role === ROLE.CONSUMER ? consumersNavbar : providersNavbar;
   return (
     <div className='flex flex-col justify-between  p-5 gap-2'>
       <div className='flex flex-col gap-2'>
@@ -61,12 +66,13 @@ const NavbarCard = ({
   onClick: (name: string) => void;
 }) => {
   return (
-    <div
+    <Link
+      href={navbarItem.href}
       className={`p-2 w-[250px] whitespace-nowrap flex-shrink flex gap-5 items-center rounded-md cursor-pointer ${isActive && 'bg-white/70 shadow-button-light  '} `}
       onClick={() => onClick(navbarItem.href)}
     >
       <navbarItem.icon size={18} />
       {navbarItem.name}
-    </div>
+    </Link>
   );
 };
